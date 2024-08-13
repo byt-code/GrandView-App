@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import {
   Menu,
   Home,
@@ -12,7 +12,8 @@ import {
   User,
   Search,
   MessageCircle,
-  SquareChevronLeft,
+  ChevronLeft,
+  ChevronRight,
   Settings as SettingsIcon
 } from 'lucide-react'
 
@@ -22,9 +23,9 @@ const navItems = [
   { icon: <FileSpreadsheet size={24} />, label: 'Quote Sheet', id: 'quote-sheet' },
   { icon: <Package size={24} />, label: 'Inventory', id: 'inventory' },
   { icon: <Truck size={24} />, label: 'Job Orders', id: 'job-orders' },
-  /* { icon: <DollarSign size={24} />, label: 'Billing', id: 'billing' }, */
-  /* { icon: <BarChart2 size={24} />, label: 'Reports', id: 'reports' }, */
-  /* { icon: <Bell size={24} />, label: 'Notifications', id: 'notifications' }, */
+  { icon: <DollarSign size={24} />, label: 'Billing', id: 'billing' },
+  { icon: <BarChart2 size={24} />, label: 'Reports', id: 'reports' },
+  { icon: <Bell size={24} />, label: 'Notifications', id: 'notifications' },
   { icon: <User size={24} />, label: 'Profile', id: 'profile' },
   { icon: <SettingsIcon size={24} />, label: 'Settings', id: 'settings' }
 ]
@@ -32,14 +33,23 @@ const navItems = [
 function SideNavBar() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true)
   const [activeTab, setActiveTab] = useState('dashboard')
+  const [notifications, setNotifications] = useState(0)
+
+  useEffect(() => {
+    const fetchNotifications = () => {
+      setNotifications(Math.floor(Math.random() * 10))
+    }
+    fetchNotifications()
+    const intervalId = setInterval(fetchNotifications, 60000)
+    return () => clearInterval(intervalId)
+  }, [])
 
   const toggleSidebar = () => setIsSidebarOpen(!isSidebarOpen)
 
   return (
-    <>
-      {/* <div className="font-sans bg-gray-100  flex flex-col"> */}
+    <div className="font-sans bg-gray-100 min-h-screen flex flex-col">
       {/* Header */}
-      {/* <header className="bg-white shadow-md p-4 flex justify-between items-center z-10">
+      <header className="bg-white shadow-md p-4 flex justify-between items-center z-10">
         <div className="flex items-center">
           <h1 className="text-2xl font-bold text-indigo-700">GrandView Dashboard</h1>
         </div>
@@ -71,35 +81,34 @@ function SideNavBar() {
           </button>
         </div>
       </header>
-      </div> */}
 
-      <div className="flex text-lg text-gray-900">
+      <div className="flex flex-1 overflow-hidden">
         {/* Sidebar */}
         <aside
-          className={`fixed left-0  h-full border-r-[1px] border-white-500 bg-slate-200 bg-opacity-50 transition-all duration-300 ease-in-out ${
-            isSidebarOpen ? 'w-64' : 'w-16'
-          } overflow-hidden drop-shadow-xl`}
+          className={`bg-indigo-800 text-white transition-all duration-300 ease-in-out ${
+            isSidebarOpen ? 'w-64' : 'w-20'
+          } overflow-y-auto`}
         >
           <div className="flex justify-between items-center p-4">
-            <h1
-              className={`text-xl text-center 
-            font-bold ${isSidebarOpen ? '' : 'hidden'}`}
+            <h2 className={`text-xl font-bold ${isSidebarOpen ? '' : 'hidden'}`}>
+              GrandView
+            </h2>
+            <button
+              onClick={toggleSidebar}
+              className="p-2 rounded-md text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500"
             >
-              Menu
-            </h1>
-            <button onClick={toggleSidebar} className="text-gray-900 ">
-              {isSidebarOpen ? <SquareChevronLeft size={24} /> : <Menu size={24} />}
+              {isSidebarOpen ? <ChevronLeft size={24} /> : <ChevronRight size={24} />}
             </button>
           </div>
           {/* Navigation Bar */}
-          <nav>
+          <nav className="mt-4">
             {navItems.map((item) => (
               <button
                 key={item.id}
-                className={`flex items-center w-full p-4  rounded-lg cursor-pointer transition-colors duration-200 hover:bg-gray-300 ${
+                className={`flex items-center w-full p-4 rounded-lg cursor-pointer transition-colors duration-200 hover:bg-indigo-700 ${
                   activeTab === item.id
-                    ? 'bg-blizzard-blue-300 bg-opacity-70 text-blizzard-blue-600 shadow-md rounded-lg '
-                    : ''
+                    ? 'bg-indigo-900 text-white'
+                    : 'text-indigo-200'
                 }`}
                 onClick={() => setActiveTab(item.id)}
               >
@@ -110,24 +119,19 @@ function SideNavBar() {
           </nav>
         </aside>
         {/* Main Content */}
-        <div
-          className={`flex-1 transition-all duration-300 ease-in-out ${
-            isSidebarOpen ? 'ml-64' : 'ml-16'
-          }`}
-        >
-        
-          <main className="p-6">
-            <h2 className="text-3xl font-bold mb-4">
-              {navItems.find((item) => item.id === activeTab)?.label}
-            </h2>
-            <p className="text-lg">
+        <main className="flex-1 overflow-y-auto p-6">
+          <h2 className="text-3xl font-bold mb-4 text-indigo-800">
+            {navItems.find((item) => item.id === activeTab)?.label}
+          </h2>
+          <div className="bg-white rounded-lg shadow-md p-6">
+            <p className="text-lg text-gray-700">
               This is the {navItems.find((item) => item.id === activeTab)?.label} page content.
+              Add your specific content for each page here.
             </p>
-          </main>
-        </div>
+          </div>
+        </main>
       </div>
-      </>
-    
+    </div>
   )
 }
 

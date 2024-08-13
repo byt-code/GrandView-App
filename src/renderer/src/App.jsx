@@ -1,8 +1,6 @@
-import { ScanFace } from 'lucide-react'
-import Sidebar from './PlayGround/SideBar'
-import Test from './PlayGround/Test'
-import Dashboard from './UIComponents/DashBoard'
+import SideBar from './UIComponents/DashBoard1'
 import SideNavBar from './Dashboard/SideNavBar'
+import Header from './Dashboard/Header'
 
 function App() {
   return (
@@ -10,7 +8,9 @@ function App() {
       {/*<Dashboard/>*/}
       {/* <Test /> */}
       {/* <Sidebar /> */}
+      <Header />
       <SideNavBar />
+      {/* <SideBar /> */}
     </>
   )
 }
