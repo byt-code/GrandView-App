@@ -1,17 +1,16 @@
-import SideBar from './UIComponents/DashBoard1'
-import SideNavBar from './Dashboard/SideNavBar'
-import Header from './Dashboard/Header'
+import DashBoard from "./Dashboard/DashBoard"
+import Theme from "./PlayGround/Theme"
+
+
+
 
 function App() {
   return (
     <>
-      {/*<Dashboard/>*/}
-      {/* <Test /> */}
-      {/* <Sidebar /> */}
-      <Header />
-      <SideNavBar />
-      {/* <SideBar /> */}
+   <DashBoard/>
+      {/* <Theme /> */}
     </>
+    
   )
 }
 
