@@ -42,13 +42,17 @@ function SideNavBar() {
         return <LeadSheet />
 
       default:
-        return <div>Build and Link the the tab first</div>
+        return (
+          <div className="text-center font-mono text-orange-600">
+            Build and Link the the tab first
+          </div>
+        )
     }
   }
 
   return (
     <>
-      <div className="flex text-lg text-gray-900">
+      <div className="flex text-lg  text-gray-900">
         {/* Sidebar */}
         <aside
           className={`fixed left-0  text-slate-700 h-full border-r-[1px] backdrop-blur-md border-white-500 bg-primary-900 bg-opacity-10
@@ -58,7 +62,7 @@ function SideNavBar() {
         >
           <div className="flex justify-between items-center p-4">
             <h1
-              className={`text-xl text-center 
+              className={`text-xl text-center  
             font-bold ${isSidebarOpen ? '' : 'hidden'}`}
             >
               Menu
@@ -72,12 +76,12 @@ function SideNavBar() {
             {navItems.map((item) => (
               <button
                 key={item.id}
-                className={`flex items-center w-full p-4  rounded-lg cursor-pointer 
-                  transition-colors duration-200   ${
-                    activeTab === item.id
-                      ? ' text-accent-400 bg-primary-900 bg-op  shadow-xl rounded-lg '
-                      : ''
-                  }`}
+                className={`flex items-center w-full p-4  rounded-lg cursor-pointer hover:shadow-custom-hover
+                     ${
+                       activeTab === item.id
+                         ? ' text-accent-400 shadow-custom-hover bg-primary-900 bg-opacity-90 backdrop-blur-md  rounded-lg '
+                         : ''
+                     }`}
                 onClick={() => setActiveTab(item.id)}
               >
                 <span>{item.icon}</span>
@@ -93,7 +97,7 @@ function SideNavBar() {
           }`}
         >
           <main className="p-6">
-            <h2 className="  bg-opacity-40 b rounded-md p-2 text-center text-3xl font-bold mb-4">
+            <h2 className="   rounded-md p-2 text-center text-3xl font-bold mb-4">
               {navItems.find((item) => item.id === activeTab)?.label}
             </h2>
             {renderTabContent()}

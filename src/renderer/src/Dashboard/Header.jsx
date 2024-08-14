@@ -1,14 +1,18 @@
 import React, { useState } from 'react'
+import logo from '../assets/logo.png'
 import { User, Search, MessageCircle, Bell } from 'lucide-react'
 
 function Header() {
-  const [notifications, setNotifications] = useState(3);
+  const [notifications, setNotifications] = useState(3)
   return (
     <>
       {/* Header */}
-      <header className="bg-primary-900 backdrop-blur-md shadow-lg  p-3 flex justify-between items-center z-10">
-        <div className="flex items-center">
-          <h1 className="text-white ml-10 text-2xl font-bold ">GrandView Dashboard</h1>
+      <header className="bg-primary-900 backdrop-blur-md shadow-lg  p-6 flex justify-between items-center z-10">
+        <div className="flex items-center ml-2">
+          <img src={logo} 
+          alt="Logo" 
+          className="h-10 w-auto mr-4 rounded-sm" />
+          <h1 className="text-white  text-2xl font-bold ">GrandView Dashboard</h1>
         </div>
         <div className="flex items-center space-x-4">
           <div className="relative">
@@ -22,8 +26,8 @@ function Header() {
               size={20}
             />
           </div>
-          <button className="p-2 rounded-full hover:bg-gray-200 relative">
-            <Bell size={20} className="text-gray-600" />
+          <button className="p-2 rounded-full hover:bg-accent-400 relative">
+            <Bell size={20} className="text-white" />
             {notifications > 0 && (
               <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
                 {notifications}
@@ -33,7 +37,7 @@ function Header() {
           {/* <button className="p-2 rounded-full hover:bg-gray-200">
             <MessageCircle size={20} className="text-gray-600" />
           </button> */}
-          <button className="p-2 rounded-full hover:bg-gray-200">
+          <button className="p-2 rounded-full hover:bg-accent-400">
             <User size={20} className="text-white" />
           </button>
         </div>

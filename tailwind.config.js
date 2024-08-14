@@ -3,6 +3,19 @@ module.exports = {
   content: ['./src/**/*.{html,js,jsx,ts}'],
   theme: {
     extend: {
+      boxShadow: {
+        'inner-sm': 'inset 0 1px 2px 0 rgba(0, 0, 0, 0.05)',
+        'inner-md': 'inset 0 4px 6px -1px rgba(0, 0, 0, 0.10), inset 0 2px 4px -1px rgba(0, 0, 0, 0.06)',
+        'inner-lg': 'inset 0 10px 15px -3px rgba(0, 0, 0, 0.1), inset 0 4px 6px -2px rgba(0, 0, 0, 0.05)',
+        'inner-xl': 'inset 0 20px 25px -5px rgba(0, 0, 0, 0.1), inset 0 10px 10px -5px rgba(0, 0, 0, 0.04)',
+        'inner-2xl': 'inset 0 25px 50px -12px rgba(0, 0, 0, 0.25)',
+        'inner-color': 'inset 0 2px 4px0 rgba(0, 0, 255, 0.06)',
+        'inner-sharp': 'inset 10px 0 0 3px rgba(66, 153, 225, 0.5)',
+        'custom': '0 4px 6px rgba(0, 0, 0, 0.1)',
+        'custom-hover': ' 0 0 8px 5px rgb(6, 29, 221,0.10)',
+        'custom-active': '0 2px 4px rgba(0, 0, 0, 0.1)',
+        'custom-active-tab': 'inset 0 2px 4px rgba(0, 0, 0, 0.1)',
+      },
       colors: {
         primary: {
           50: '#ebf9ff',
@@ -41,7 +54,7 @@ module.exports = {
         '700': '#99680f',
         '800': '#7f5314',
         '900': '#6c4317',
-        '950': '#3f2309',
+        '950': '#3f2309',  
         },
         neutral: {
           50: '#f8fafc',
