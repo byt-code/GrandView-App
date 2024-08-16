@@ -100,7 +100,7 @@ const LeadSheet = () => {
 
   return (
     <div className="main-content flex-grow p-5">
-      <div className="bg-blue-50 p-6 rounded-lg shadow-lg">
+      <div className="bg-white bg-opacity-0  p-6 rounded-lg shadow-lg">
         <form id="leadForm" onSubmit={handleSubmit}>
           <div className="flex mb-4">
             <div className="flex-1 mr-4">

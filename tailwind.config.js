@@ -10,11 +10,10 @@ module.exports = {
         'inner-xl': 'inset 0 20px 25px -5px rgba(0, 0, 0, 0.1), inset 0 10px 10px -5px rgba(0, 0, 0, 0.04)',
         'inner-2xl': 'inset 0 25px 50px -12px rgba(0, 0, 0, 0.25)',
         'inner-color': 'inset 0 2px 4px0 rgba(0, 0, 255, 0.06)',
-        'inner-sharp': 'inset 10px 0 0 3px rgba(66, 153, 225, 0.5)',
-        'custom': '0 4px 6px rgba(0, 0, 0, 0.1)',
-        'custom-hover': ' 0 0 8px 5px rgb(6, 29, 221,0.10)',
-        'custom-active': '0 2px 4px rgba(0, 0, 0, 0.1)',
-        'custom-active-tab': 'inset 0 2px 4px rgba(0, 0, 0, 0.1)',
+        'inner-sharp': 'inset 10px 0 0 3px rgba(0,0,0, 0.5)',
+        
+        'custom-hover': ' 0 0 8px 5px rgb(6, 29, 221,0.12)',
+        
       },
       colors: {
         primary: {

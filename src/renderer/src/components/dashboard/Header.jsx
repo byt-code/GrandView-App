@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import logo from '../assets/logo.png'
+import logo from '../../assets/logo.png'
 import { User, Search, MessageCircle, Bell } from 'lucide-react'
 
 function Header() {
@@ -7,11 +7,11 @@ function Header() {
   return (
     <>
       {/* Header */}
-      <header className="bg-primary-900 backdrop-blur-md shadow-lg  p-6 flex justify-between items-center z-10">
+      <header className="  bg-primary-900 backdrop-blur-md shadow-lg  p-4 flex justify-between items-center z-10">
         <div className="flex items-center ml-2">
           <img src={logo} 
           alt="Logo" 
-          className="h-10 w-auto mr-4 rounded-sm" />
+          className="h-10 w-auto mr-2 rounded-sm" />
           <h1 className="text-white  text-2xl font-bold ">GrandView Dashboard</h1>
         </div>
         <div className="flex items-center space-x-4">
