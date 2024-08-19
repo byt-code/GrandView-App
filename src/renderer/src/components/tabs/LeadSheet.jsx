@@ -15,7 +15,7 @@ const initialFormData = {
   appointmentSchedule: '',
   source: '',
   colour: '',
-  angels: [],
+  angles: [],
   reveals: '',
   size: '',
   jobType: '',
@@ -27,10 +27,13 @@ const LeadSheet = () => {
   const [errors, setErrors] = useState({})
   const [focusedField, setFocusedField] = useState('')
 
-  const countryCodes = useMemo(() => [
-    { code: '+61', country: 'Australia' }
-    // Add more country codes as needed
-  ], [])
+  const countryCodes = useMemo(
+    () => [
+      { code: '+61', country: 'Australia' }
+      // Add more country codes as needed
+    ],
+    []
+  )
 
   const handleChange = useCallback((e) => {
     const { name, value, type, checked } = e.target
@@ -44,9 +47,7 @@ const LeadSheet = () => {
       if (type === 'checkbox') {
         return {
           ...prevState,
-          [name]: checked
-            ? [...prevState[name], value]
-            : prevState[name].filter((v) => v !== value)
+          [name]: checked ? [...prevState[name], value] : prevState[name].filter((v) => v !== value)
         }
       }
       return {
@@ -60,6 +61,26 @@ const LeadSheet = () => {
     setFocusedField(e.target.name)
   }, [])
 
+  const handleBlur = useCallback((e) => {
+    const { name, value } = e.target
+    if (!value.trim()) {
+      setErrors((prevErrors) => ({
+        ...prevErrors,
+        [name]: `${name.charAt(0).toUpperCase() + name.slice(1)} is required`
+      }))
+    } else if (name === 'email' && !isValidEmail(value)) {
+      setErrors((prevErrors) => ({
+        ...prevErrors,
+        email: 'Please enter a valid email address'
+      }))
+    } else if (name === 'mobile' && !isValidPhone(value)) {
+      setErrors((prevErrors) => ({
+        ...prevErrors,
+        mobile: 'Please enter a valid phone number'
+      }))
+    }
+  }, [])
+
   const validateForm = useCallback(() => {
     const newErrors = {}
     let isValid = true
@@ -67,10 +88,10 @@ const LeadSheet = () => {
     Object.entries(formData).forEach(([key, value]) => {
       if (Array.isArray(value) && value.length === 0) {
         isValid = false
-        newErrors[key] = `${key.charAt(0).toUpperCase() + key.slice(1)} is empty`
+        newErrors[key] = `${key.charAt(0).toUpperCase() + key.slice(1)} is required`
       } else if (typeof value === 'string' && !value.trim()) {
         isValid = false
-        newErrors[key] = `${key.charAt(0).toUpperCase() + key.slice(1)} is empty`
+        newErrors[key] = `${key.charAt(0).toUpperCase() + key.slice(1)} is required`
       }
     })
 
@@ -88,13 +109,16 @@ const LeadSheet = () => {
     return isValid
   }, [formData])
 
-  const handleSubmit = useCallback((e) => {
-    e.preventDefault()
-    if (validateForm()) {
-      alert('Form submitted successfully!')
-      handleReset()
-    }
-  }, [validateForm])
+  const handleSubmit = useCallback(
+    (e) => {
+      e.preventDefault()
+      if (validateForm()) {
+        alert('Form submitted successfully!')
+        handleReset()
+      }
+    },
+    [validateForm]
+  )
 
   const handleReset = useCallback(() => {
     setFormData(initialFormData)
@@ -106,50 +130,59 @@ const LeadSheet = () => {
     window.print()
   }, [])
 
-  const renderInput = useCallback((name, label, type = 'text') => (
-    <div className="flex-1 mr-4">
-      <label htmlFor={name} className="block mb-2">
-        {label}
-      </label>
-      <input
-        type={type}
-        id={name}
-        name={name}
-        value={formData[name]}
-        onChange={handleChange}
-        onFocus={handleFocus}
-        className={`w-full px-3 py-2 border rounded-md ${focusedField === name ? 'border-blue-500' : ''
-        } ${errors[name] ? 'border-red-500' : 'border-gray-300'}`}
-      />
-      {errors[name] && <p className="text-red-500 text-sm">{errors[name]}</p>}
-    </div>
-  ), [formData, errors, focusedField, handleChange, handleFocus])
+  const renderInput = useCallback(
+    (name, label, type = 'text') => (
+      <div className="flex-1 mr-4">
+        <label htmlFor={name} className="block mb-2">
+          {label}
+        </label>
+        <input
+          type={type}
+          id={name}
+          name={name}
+          value={formData[name]}
+          onChange={handleChange}
+          onFocus={handleFocus}
+          onBlur={handleBlur}
+          className={`w-full px-3 py-2 border rounded-md ${
+            focusedField === name ? 'border-blue-500' : ''
+          } ${errors[name] ? 'border-red-500' : 'border-gray-300'}`}
+        />
+        {errors[name] && <p className="text-red-500 text-sm">{errors[name]}</p>}
+      </div>
+    ),
+    [formData, errors, focusedField, handleChange, handleFocus, handleBlur]
+  )
 
-  const renderSelect = useCallback((name, label, options) => (
-    <div className="flex-1 mr-4">
-      <label htmlFor={name} className="block mb-2">
-        {label}
-      </label>
-      <select
-        id={name}
-        name={name}
-        value={formData[name]}
-        onChange={handleChange}
-        onFocus={handleFocus}
-        className={`w-full px-3 py-2 border rounded-md ${
-          focusedField === name ? 'border-blue-500' : ''
-        } ${errors[name] ? 'border-red-500' : 'border-gray-300'}`}
-      >
-        <option value="">Select an option</option>
-        {options.map((option) => (
-          <option key={option} value={option}>
-            {option}
-          </option>
-        ))}
-      </select>
-      {errors[name] && <p className="text-red-500 text-sm">{errors[name]}</p>}
-    </div>
-  ), [formData, errors, focusedField, handleChange, handleFocus])
+  const renderSelect = useCallback(
+    (name, label, options) => (
+      <div className="flex-1 mr-4">
+        <label htmlFor={name} className="block mb-2">
+          {label}
+        </label>
+        <select
+          id={name}
+          name={name}
+          value={formData[name]}
+          onChange={handleChange}
+          onFocus={handleFocus}
+          onBlur={handleBlur}
+          className={`w-full px-3 py-2 border rounded-md ${
+            focusedField === name ? 'border-blue-500' : ''
+          } ${errors[name] ? 'border-red-500' : 'border-gray-300'}`}
+        >
+          <option value="">Select an option</option>
+          {options.map((option) => (
+            <option key={option} value={option}>
+              {option}
+            </option>
+          ))}
+        </select>
+        {errors[name] && <p className="text-red-500 text-sm">{errors[name]}</p>}
+      </div>
+    ),
+    [formData, errors, focusedField, handleChange, handleFocus, handleBlur]
+  )
 
   return (
     <div className="main-content flex-grow p-5">
@@ -172,6 +205,7 @@ const LeadSheet = () => {
                   value={formData.countryCode}
                   onChange={handleChange}
                   onFocus={handleFocus}
+                  onBlur={handleBlur}
                   className={`mr-2 px-3 py-2 border rounded-md ${
                     focusedField === 'countryCode' ? 'border-blue-500' : ''
                   } ${errors.countryCode ? 'border-red-500' : 'border-gray-300'}`}
@@ -189,6 +223,7 @@ const LeadSheet = () => {
                   value={formData.mobile}
                   onChange={handleChange}
                   onFocus={handleFocus}
+                  onBlur={handleBlur}
                   className={`flex-1 px-3 py-2 border rounded-md ${
                     focusedField === 'mobile' ? 'border-blue-500' : ''
                   } ${errors.mobile ? 'border-red-500' : 'border-gray-300'}`}
@@ -208,56 +243,53 @@ const LeadSheet = () => {
           <div className="flex mb-4">
             {renderInput('colour', 'Colour')}
             <div className="flex-1">
-              <label className="block mb-2">Angels:</label>
-              <div className="flex">
-                {['75//25', '25/12'].map((value) => (
-                  <label key={value} className="mr-4">
+              <label className="block mb-2">Angles</label>
+              <div className="flex flex-wrap">
+                {['75/25', '50/25', '25/12'].map((angel) => (
+                  <label key={angel} className="mr-4">
                     <input
                       type="radio"
-                      name="angels"
-                      value={value}
-                      checked={formData.angels.includes(value)}
+                      name="angles"
+                      value={angel}
+                      checked={formData.angles.includes(angel)}
                       onChange={handleChange}
-                      onFocus={handleFocus}
-                    />{' '}
-                    {value}
+                    />
+                    <span className="ml-1">{angel}</span>
                   </label>
                 ))}
               </div>
-              {errors.angels && <p className="text-red-500 text-sm">{errors.angels}</p>}
+              {errors.angles && <p className="text-red-500 text-sm">{errors.angles}</p>}
             </div>
           </div>
           <div className="flex mb-4">
-            {renderSelect('reveals', 'Reveals:', ['Meranti', 'PrimedPine'])}
-            {renderSelect('size', 'Size:', ['110', '140'])}
-            {renderSelect('jobType', 'Job type:', ['Insert', 'Full Take-out'])}
+            {renderInput('reveals', 'Reveals')}
+            {renderInput('size', 'Size')}
           </div>
           <div className="flex mb-4">
-            {renderSelect('glass', 'Glass:', ['Float', 'ClearLam', 'TransLam', 'Other'])}
+            {renderSelect('jobType', 'Job Type', ['Job1', 'Job2', 'Job3'])}
+            {renderSelect('glass', 'Glass', ['Glass1', 'Glass2', 'Glass3'])}
           </div>
-          <div className="flex justify-between">
+          <div className="flex justify-between mt-4">
+            <button
+              type="submit"
+              className="px-4 py-2 bg-blue-500 text-white rounded-md shadow-md hover:bg-blue-600"
+            >
+              Submit
+            </button>
             <button
               type="button"
-              className="bg-blue-500 text-gray-800 px-4 py-2 rounded-md hover:bg-blue-600 mr-2"
+              onClick={handleReset}
+              className="px-4 py-2 bg-gray-500 text-white rounded-md shadow-md hover:bg-gray-600"
+            >
+              Reset
+            </button>
+            <button
+              type="button"
               onClick={printForm}
+              className="px-4 py-2 bg-green-500 text-white rounded-md shadow-md hover:bg-green-600"
             >
               Print
             </button>
-            <div className="flex gap-2">
-              <button
-                type="reset"
-                className="bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600"
-                onClick={handleReset}
-              >
-                Reset
-              </button>
-              <button
-                type="submit"
-                className="bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600"
-              >
-                Submit
-              </button>
-            </div>
           </div>
         </form>
       </div>
