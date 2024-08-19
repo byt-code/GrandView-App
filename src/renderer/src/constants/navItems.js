@@ -1,3 +1,4 @@
+import React from 'react';
 import {
   Home,
   FileText,
@@ -6,7 +7,7 @@ import {
   Truck,
   User,
   Settings as SettingsIcon
-} from 'lucide-react'
+} from 'lucide-react';
 
 const navItems = [
   { icon: Home, label: 'Home', id: 'home' },
@@ -16,6 +17,6 @@ const navItems = [
   { icon: Truck, label: 'Job Orders', id: 'job-orders' },
   { icon: User, label: 'Profile', id: 'profile' },
   { icon: SettingsIcon, label: 'Settings', id: 'settings' }
-]
+];
 
-export default navItems
+export default navItems;

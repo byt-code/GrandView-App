@@ -1,26 +1,39 @@
-import React, { useState } from 'react'
+import React, { useState, useCallback, useMemo } from 'react'
 import Sidebar from './Sidebar'
 import MainContent from './MainContent'
 import Header from './Header'
 
-function DashBoard() {
+const DashBoard = React.memo(() => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true)
-  const [activeTab, setActiveTab] = useState('dashboard')
+  const [activeTab, setActiveTab] = useState('home')
 
-  const toggleSidebar = () => setIsSidebarOpen(!isSidebarOpen)
+  const toggleSidebar = useCallback(() => {
+    setIsSidebarOpen(prevState => !prevState)
+  }, [])
+
+  const sidebarProps = useMemo(() => ({
+    isSidebarOpen,
+    toggleSidebar,
+    activeTab,
+    setActiveTab
+  }), [isSidebarOpen, toggleSidebar, activeTab, setActiveTab])
+
+  const mainContentProps = useMemo(() => ({
+    isSidebarOpen,
+    activeTab
+  }), [isSidebarOpen, activeTab])
 
   return (
-    <div className=" text-lg text-gray-900">
+    <div className="flex flex-col min-h-screen text-lg text-gray-900">
       <Header />
-      <Sidebar
-        isSidebarOpen={isSidebarOpen}
-        toggleSidebar={toggleSidebar}
-        activeTab={activeTab}
-        setActiveTab={setActiveTab}
-      />
-      <MainContent isSidebarOpen={isSidebarOpen} activeTab={activeTab} />
+      <div className="flex flex-1">
+        <Sidebar {...sidebarProps} />
+        <MainContent {...mainContentProps} />
+      </div>
     </div>
   )
-}
+})
+
+DashBoard.displayName = 'DashBoard'
 
 export default DashBoard
